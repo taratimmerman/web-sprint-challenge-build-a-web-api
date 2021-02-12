@@ -10,10 +10,18 @@ const server = express()
 
 server.use(cors())
 server.use(express.json())
-server.use(express.static(path.join(__dirname,"client/build")))
+server.use(express.static(path.join(__dirname,'client/build')))
 
 server.use('/api/actions', actionsRouter)
-server.use('api/projects', projectsRouter)
+server.use('/api/projects', projectsRouter)
+
+server.use('/api/*',(_,res)=>{
+  res.json({data: 'Yay Sprint 1!!!!'})
+})
+
+server.use('*', (_,res)=>{
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
+})
 
 // OTHER ENDPOINTS
 server.get('/', (req, res) => {

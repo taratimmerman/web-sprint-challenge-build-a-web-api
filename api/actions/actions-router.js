@@ -7,7 +7,7 @@ const router = express.Router()
 
 // ACTIONS ENDPOINTS
 router.get('/', (req, res) => {
-    Action.get(req.query)
+    Action.get(req.query.id)
         .then(actions => {
             res.status(200).json(actions)
         })
