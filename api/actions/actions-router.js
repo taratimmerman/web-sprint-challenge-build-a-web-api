@@ -1,6 +1,7 @@
 // Write your "actions" router here!
 const Action = require('./actions-model')
 const express = require('express')
+const mw = require('../middleware/middleware')
 
 const router = express.Router()
 
@@ -32,29 +33,25 @@ router.get('/:id', (req, res) => {
         })
 })
 
-router.post('/', (req, res) => {
+router.post('/', mw.validateAction, (req, res) => {
     Action.insert(req.body)
         .then(actions => {
             res.status(201).json(actions)
         })
         .catch(err => {
             console.log(err)
-            res.status(500).json({ message: 'Please provide contents for the action' })
+            res.status(500).json({ message: 'Error adding Action' })
         })
 })
 
-router.put('/:id', (req, res) => {
-    const changes = req.body
-    Action.update(req.params.id, changes)
-        .then(actions => {
-            if (actions) {
-                res.status(200).json(actions)
-            } else {
-                res.status(404).json({ message: 'The action with the specified ID does not exist' })
-            }
+router.put('/:id', mw.validateAction, (req, res) => {
+    Action.update(req.params.id, req.body)
+        .then((update) => {
+            res.status(200).json(update)
         })
         .catch(err => {
-            res.status(500).json({ message: `${err}` })
+            console.log(err)
+            res.status(500).json({ message: 'Error updating Action' })
         })
 })
 

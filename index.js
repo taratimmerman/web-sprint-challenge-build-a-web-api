@@ -1,20 +1,7 @@
-const dotenv = require("dotenv").config()
-const express = require("express")
-const cors = require("cors")
-const path = require("path")
-
-const actionsRouter = require('./api/actions/actions-router')
-
-const app = express()
+const server = require('./api/server');
 const port = process.env.PORT || 8080
 
-app.use(cors())
-app.use(express.json())
-app.use(express.static(path.join(__dirname,"client/build")))
-
-app.use('/api/actions', actionsRouter)
-
-app.listen(port, ()=>{
+server.listen(port, ()=>{
     console.log(`Server is running on port: ${port}!`)
 })
 
